@@ -21,26 +21,29 @@ func (s sim) parents() string {
 	return fmt.Sprintf("%d %d", s.parent1.id, s.parent2.id)
 }
 
+func newSim(s []sim) sim {
+	sex := "F"
+	if len(s)%2 == 0 {
+		sex = "M"
+	}
+	return sim{
+		id:      len(s),
+		sex:     sex,
+		parent1: &s[0],
+		parent2: &s[1],
+	}
+}
+
 func main() {
 	sims := []sim{
 		sim{id: 0, sex: "M"},
 		sim{id: 1, sex: "F"},
 	}
 
-	sims = append(sims, sim{id: 2,
-		sex:     "M",
-		parent1: &sims[0],
-		parent2: &sims[1],
-	})
+	sims = append(sims, newSim(sims))
+	sims = append(sims, newSim(sims))
 
-	sims = append(sims, sim{id: 3,
-		sex:     "M",
-		parent1: &sims[0],
-		parent2: &sims[1],
-	})
-
-	fmt.Println(sims[0].format())
-	fmt.Println(sims[1].format())
-	fmt.Println(sims[2].format())
-	fmt.Println(sims[3].format())
+	for _, s := range sims {
+		fmt.Println(s.format())
+	}
 }
