@@ -10,7 +10,15 @@ type sim struct {
 }
 
 func (s sim) format() string {
-	return fmt.Sprintf("ID: %d Sex: %s Parents: - -", s.id, s.sex)
+	return fmt.Sprintf("ID: %d Sex: %s Parents: %s", s.id, s.sex, s.parents())
+}
+
+func (s sim) parents() string {
+	if s.parent1 == nil {
+		return "- -"
+	} else {
+		return fmt.Sprintf("%d %d", s.parent1.id, s.parent2.id)
+	}
 }
 
 func main() {
@@ -19,8 +27,20 @@ func main() {
 		sim{id: 1, sex: "F"},
 	}
 
+	sims = append(sims, sim{id: 2,
+		sex:     "M",
+		parent1: &sims[0],
+		parent2: &sims[1],
+	})
+
+	sims = append(sims, sim{id: 3,
+		sex:     "M",
+		parent1: &sims[0],
+		parent2: &sims[1],
+	})
+
 	fmt.Println(sims[0].format())
 	fmt.Println(sims[1].format())
-	fmt.Println("ID: 2 Sex: M Parents: 1 2")
-	fmt.Println("ID: 3 Sex: F Parents: 1 2")
+	fmt.Println(sims[2].format())
+	fmt.Println(sims[3].format())
 }
