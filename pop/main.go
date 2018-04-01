@@ -16,9 +16,9 @@ func (s sim) format() string {
 func (s sim) parents() string {
 	if s.parent1 == nil {
 		return "- -"
-	} else {
-		return fmt.Sprintf("%d %d", s.parent1.id, s.parent2.id)
 	}
+
+	return fmt.Sprintf("%d %d", s.parent1.id, s.parent2.id)
 }
 
 func main() {
