@@ -36,8 +36,9 @@ func main() {
 		sim{id: 1, sex: 1},
 	}
 
-	sims = append(sims, newSim(sims))
-	sims = append(sims, newSim(sims))
+	for i := 0; i < 100; i++ {
+		sims = append(sims, newSim(sims))
+	}
 
 	for _, s := range sims {
 		fmt.Println(s.format())
