@@ -4,13 +4,13 @@ import "fmt"
 
 type sim struct {
 	id      int
-	sex     string
+	sex     int
 	parent1 *sim
 	parent2 *sim
 }
 
 func (s sim) format() string {
-	return fmt.Sprintf("ID: %d Sex: %s Parents: %s", s.id, s.sex, s.parents())
+	return fmt.Sprintf("ID: %d Sex: %d Parents: %s", s.id, s.sex, s.parents())
 }
 
 func (s sim) parents() string {
@@ -22,13 +22,9 @@ func (s sim) parents() string {
 }
 
 func newSim(s []sim) sim {
-	sex := "F"
-	if len(s)%2 == 0 {
-		sex = "M"
-	}
 	return sim{
 		id:      len(s),
-		sex:     sex,
+		sex:     len(s) % 2,
 		parent1: &s[0],
 		parent2: &s[1],
 	}
@@ -36,8 +32,8 @@ func newSim(s []sim) sim {
 
 func main() {
 	sims := []sim{
-		sim{id: 0, sex: "M"},
-		sim{id: 1, sex: "F"},
+		sim{id: 0, sex: 0},
+		sim{id: 1, sex: 1},
 	}
 
 	sims = append(sims, newSim(sims))
