@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type sim struct {
 	id      int
@@ -23,13 +26,19 @@ func (s sim) parents() string {
 }
 
 func newSim(s []sim, year int) (error, sim) {
-	return nil, sim{
-		id:      len(s),
-		sex:     len(s) % 2,
-		parent1: &s[0],
-		parent2: &s[1],
-		born:    year,
+	parentAge := year - s[0].born
+
+	if parentAge < 40 {
+		return nil, sim{
+			id:      len(s),
+			sex:     len(s) % 2,
+			parent1: &s[0],
+			parent2: &s[1],
+			born:    year,
+		}
 	}
+
+	return errors.New("nope"), sim{}
 }
 
 func main() {
@@ -39,7 +48,10 @@ func main() {
 	}
 
 	for i := 20; i < 100; i++ {
-		_, sim := newSim(sims, i)
+		err, sim := newSim(sims, i)
+		if err != nil {
+			break
+		}
 		sims = append(sims, sim)
 	}
 
