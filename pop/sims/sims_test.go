@@ -56,4 +56,21 @@ var _ = Describe("Sims", func() {
 		})
 	})
 
+	Describe("Eligible", func() {
+		It("returns all sex 0 sims over 20 and under 40", func() {
+			year := 50
+			population := Population{
+				&Sim{Sex: 1, Born: 0},
+				&Sim{Sex: 0, Born: 0},
+				&Sim{Sex: 0, Born: 20},
+				&Sim{Sex: 0, Born: 40},
+			}
+
+			eligiblePopulation := Population{
+				&Sim{Sex: 0, Born: 20},
+			}
+
+			Expect(population.Eligible(year)).To(Equal(eligiblePopulation))
+		})
+	})
 })

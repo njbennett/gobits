@@ -6,28 +6,16 @@ import (
 	"github.com/njbennett/gobits/pop/sims"
 )
 
-func eligible0(s []sims.Sim, year int) []*sims.Sim {
-	var eligibleSims []*sims.Sim
-
-	for _, nextSim := range s {
-		if nextSim.Sex == 0 && year-nextSim.Born >= 20 {
-			eligibleSims = append(eligibleSims, &nextSim)
-		}
-	}
-
-	return eligibleSims
-}
-
 func main() {
-	pop := []sims.Sim{
-		sims.Sim{ID: 0, Sex: 0, Born: 0},
-		sims.Sim{ID: 1, Sex: 1, Born: 0},
+	pop := sims.Population{
+		&sims.Sim{ID: 0, Sex: 0, Born: 0},
+		&sims.Sim{ID: 1, Sex: 1, Born: 0},
 	}
 
-	for i := 0; i < 30; i++ {
-		parent1 := &pop[1]
+	for i := 0; i < 21; i++ {
+		parent1 := pop[1]
 
-		for _, parent0 := range eligible0(pop, i) {
+		for _, parent0 := range pop.Eligible(i) {
 			err, nextSim := sims.NewSim(parent0, parent1, i)
 			if err != nil {
 				break
@@ -35,7 +23,7 @@ func main() {
 			nextSim.ID = len(pop)
 			nextSim.Born = i
 			nextSim.Sex = i % 2
-			pop = append(pop, nextSim)
+			pop = append(pop, &nextSim)
 		}
 	}
 
