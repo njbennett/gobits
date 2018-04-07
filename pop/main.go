@@ -1,61 +1,45 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+
+	"github.com/njbennett/gobits/pop/sims"
 )
 
-type sim struct {
-	id      int
-	sex     int
-	parent1 *sim
-	parent2 *sim
-	born    int
-}
+func eligible0(s []sims.Sim, year int) []*sims.Sim {
+	var eligibleSims []*sims.Sim
 
-func (s sim) format() string {
-	return fmt.Sprintf("ID: %d Born: %d Sex: %d Parents: %s", s.id, s.born, s.sex, s.parents())
-}
-
-func (s sim) parents() string {
-	if s.parent1 == nil {
-		return "- -"
-	}
-
-	return fmt.Sprintf("%d %d", s.parent1.id, s.parent2.id)
-}
-
-func newSim(s []sim, year int) (error, sim) {
-	parentAge := year - s[0].born
-
-	if parentAge < 40 {
-		return nil, sim{
-			id:      len(s),
-			sex:     len(s) % 2,
-			parent1: &s[0],
-			parent2: &s[1],
-			born:    year,
+	for _, nextSim := range s {
+		if nextSim.Sex == 0 && year-nextSim.Born >= 20 {
+			eligibleSims = append(eligibleSims, &nextSim)
 		}
 	}
 
-	return errors.New("nope"), sim{}
+	return eligibleSims
 }
 
 func main() {
-	sims := []sim{
-		sim{id: 0, sex: 0, born: 0},
-		sim{id: 1, sex: 1, born: 0},
+	pop := []sims.Sim{
+		sims.Sim{ID: 0, Sex: 0, Born: 0},
+		sims.Sim{ID: 1, Sex: 1, Born: 0},
 	}
 
-	for i := 20; i < 100; i++ {
-		err, sim := newSim(sims, i)
-		if err != nil {
-			break
+	for i := 0; i < 30; i++ {
+		parent1 := &pop[1]
+
+		for _, parent0 := range eligible0(pop, i) {
+			err, nextSim := sims.NewSim(parent0, parent1, i)
+			if err != nil {
+				break
+			}
+			nextSim.ID = len(pop)
+			nextSim.Born = i
+			nextSim.Sex = i % 2
+			pop = append(pop, nextSim)
 		}
-		sims = append(sims, sim)
 	}
 
-	for _, s := range sims {
-		fmt.Println(s.format())
+	for _, s := range pop {
+		fmt.Println(s.Format())
 	}
 }
