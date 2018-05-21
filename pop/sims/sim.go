@@ -20,6 +20,10 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		return errors.New("nope"), Sim{}
 	}
 
+	if s0.Sex == s1.Sex {
+		return errors.New("Parents cannot have the same sex"), Sim{}
+	}
+
 	return nil, Sim{
 		Parent0: s0,
 		Parent1: s1,

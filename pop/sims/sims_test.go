@@ -13,8 +13,8 @@ var _ = Describe("Sims", func() {
 
 	Describe("NewSim", func() {
 		It("makes a new sim", func() {
-			s0 := Sim{Born: 0}
-			s1 := Sim{Born: 0}
+			s0 := Sim{Born: 0, Sex: 0}
+			s1 := Sim{Born: 0, Sex: 1}
 			year := 20
 
 			expectedSim := Sim{
@@ -30,12 +30,22 @@ var _ = Describe("Sims", func() {
 		})
 
 		It("returns an error when parent0 is too old", func() {
-			s0 := Sim{Born: 0}
-			s1 := Sim{Born: 0}
+			s0 := Sim{Sex: 0, Born: 0}
+			s1 := Sim{Sex: 1, Born: 0}
 			year := 40
 
 			err, newSim := NewSim(&s0, &s1, year)
 			Expect(err).To(Equal(errors.New("nope")))
+			Expect(newSim).To(Equal(Sim{}))
+		})
+
+		It("returns an error when parents are the same sex", func() {
+			s0 := Sim{Sex: 0, Born: 0}
+			s1 := Sim{Sex: 0, Born: 0}
+			year := 20
+
+			err, newSim := NewSim(&s0, &s1, year)
+			Expect(err).To(Equal(errors.New("Parents cannot have the same sex")))
 			Expect(newSim).To(Equal(Sim{}))
 		})
 	})
