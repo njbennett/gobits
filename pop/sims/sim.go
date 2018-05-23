@@ -64,3 +64,15 @@ func (s Population) Eligible(year int) Population {
 	}
 	return eligible
 }
+
+func (s Population) ThisYearsSims(year int) Population {
+	err, sim := NewSim(s[0], s[1], year)
+	sim.ID = len(s)
+	sim.Sex = len(s) % 2
+
+	if err != nil {
+		panic(err)
+	}
+
+	return Population{&sim}
+}

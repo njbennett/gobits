@@ -93,4 +93,39 @@ var _ = Describe("Sims", func() {
 			Expect(population.Eligible(year)).To(Equal(eligiblePopulation))
 		})
 	})
+
+	Describe("ThisYearsSims", func() {
+		It("generates a new batch of sims", func() {
+			year := 21
+			population := Population{
+				&Sim{ID: 0, Sex: 1, Born: 0},
+				&Sim{ID: 1, Sex: 0, Born: 0},
+			}
+
+			_, sim := NewSim(population[0], population[1], year)
+			sim.ID = len(population)
+
+			thisYearsSims := Population{&sim}
+
+			Expect(population.ThisYearsSims(year)).To(Equal(thisYearsSims))
+		})
+
+		It("assigns sex based on population size", func() {
+			year := 22
+			population := Population{
+				&Sim{ID: 0, Sex: 1, Born: 0},
+				&Sim{ID: 1, Sex: 0, Born: 0},
+				&Sim{ID: 2, Sex: 0, Born: 0},
+			}
+
+			_, sim := NewSim(population[0], population[1], year)
+			sim.ID = len(population)
+			sim.Sex = len(population) % 2
+
+			thisYearsSims := Population{&sim}
+
+			Expect(population.ThisYearsSims(year)).To(Equal(thisYearsSims))
+		})
+
+	})
 })
