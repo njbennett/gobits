@@ -10,8 +10,8 @@ import (
 
 func main() {
 	pop := sims.Population{
-		&sims.Sim{ID: 0, Sex: 0, Born: 0, Died: 80},
-		&sims.Sim{ID: 1, Sex: 1, Born: 0, Died: 80},
+		&sims.Sim{ID: 0, Sex: 0, Born: 0},
+		&sims.Sim{ID: 1, Sex: 1, Born: 0},
 	}
 
 	gen, err := strconv.Atoi(os.Args[1])

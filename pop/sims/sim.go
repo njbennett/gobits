@@ -11,7 +11,6 @@ type Sim struct {
 	Parent1 *Sim
 	Born    int
 	Sex     int
-	Died    int
 }
 
 type Population []*Sim
@@ -29,7 +28,6 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		Parent0: s0,
 		Parent1: s1,
 		Born:    year,
-		Died:    year + 80,
 	}
 }
 
@@ -38,11 +36,15 @@ func (s Sim) Format() string {
 	if s.Parent0 != nil {
 		parents = fmt.Sprintf("%d %d", s.Parent0.ID, s.Parent1.ID)
 	}
-	return fmt.Sprintf("ID: %d Sex: %d Born: %d Died: %d Parents: %s", s.ID, s.Sex, s.Born, s.Died, parents)
+	return fmt.Sprintf("ID: %d Sex: %d Born: %d Died: %d Parents: %s", s.ID, s.Sex, s.Born, s.death(), parents)
 }
 
 func (s Sim) age(year int) int {
 	return year - s.Born
+}
+
+func (s Sim) death() int {
+	return s.Born + 80
 }
 
 func (s Sim) eligible(year int) bool {
