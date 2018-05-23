@@ -17,11 +17,15 @@ type Population []*Sim
 
 func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 	if year-s0.Born >= 40 {
-		return errors.New("nope"), Sim{}
+		return errors.New("parent0 is too old"), Sim{}
 	}
 
 	if s0.Sex == s1.Sex {
 		return errors.New("Parents cannot have the same sex"), Sim{}
+	}
+
+	if s1.death() < year {
+		return errors.New("parent1 is too dead"), Sim{}
 	}
 
 	return nil, Sim{
