@@ -21,6 +21,7 @@ var _ = Describe("Sims", func() {
 				Parent0: &s0,
 				Parent1: &s1,
 				Born:    year,
+				Died:    year + 80,
 			}
 
 			err, newSim := NewSim(&s0, &s1, year)
@@ -81,28 +82,6 @@ var _ = Describe("Sims", func() {
 			}
 
 			Expect(population.Eligible(year)).To(Equal(eligiblePopulation))
-		})
-	})
-
-	Describe("Cull", func() {
-		It("returns all sims under age 80", func() {
-			year := 90
-			population := Population{
-				&Sim{Sex: 1, Born: 0},
-				&Sim{Sex: 0, Born: 0},
-				&Sim{Sex: 0, Born: 20},
-				&Sim{Sex: 0, Born: 40},
-			}
-
-			culledPopulation := Population{
-				&Sim{Sex: 1, Born: 0, Died: year},
-				&Sim{Sex: 0, Born: 0, Died: year},
-				&Sim{Sex: 0, Born: 20},
-				&Sim{Sex: 0, Born: 40},
-			}
-
-			Expect(population.Cull(year)).To(Equal(culledPopulation))
-
 		})
 	})
 })

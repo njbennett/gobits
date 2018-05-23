@@ -29,6 +29,7 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		Parent0: s0,
 		Parent1: s1,
 		Born:    year,
+		Died:    year + 80,
 	}
 }
 
@@ -56,13 +57,4 @@ func (s Population) Eligible(year int) Population {
 		}
 	}
 	return eligible
-}
-
-func (s Population) Cull(year int) Population {
-	for _, nextSim := range s {
-		if nextSim.age(year) >= 80 {
-			nextSim.Died = year
-		}
-	}
-	return s
 }
