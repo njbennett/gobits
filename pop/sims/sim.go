@@ -44,10 +44,14 @@ func (s Sim) age(year int) int {
 	return year - s.Born
 }
 
+func (s Sim) eligible(year int) bool {
+	return s.Sex == 0 && s.age(year) >= 20 && s.age(year) <= 40
+}
+
 func (s Population) Eligible(year int) Population {
 	eligible := Population{}
 	for _, nextSim := range s {
-		if nextSim.Sex == 0 && nextSim.age(year) >= 20 && nextSim.age(year) <= 40 {
+		if nextSim.eligible(year) {
 			eligible = append(eligible, nextSim)
 		}
 	}
