@@ -58,6 +58,16 @@ var _ = Describe("Sims", func() {
 			Expect(err).To(Equal(errors.New("parent1 is too dead")))
 			Expect(newSim).To(Equal(Sim{}))
 		})
+
+		It("returns an error when parent0 is not sex 0", func() {
+			s0 := Sim{Born: 0, Sex: 0}
+			s1 := Sim{Born: 0, Sex: 1}
+			year := 20
+
+			err, newSim := NewSim(&s1, &s0, year)
+			Expect(err).To(Equal(errors.New("parent0 should be sex 0")))
+			Expect(newSim).To(Equal(Sim{}))
+		})
 	})
 
 	Describe("Format", func() {
@@ -98,8 +108,8 @@ var _ = Describe("Sims", func() {
 		It("generates a new batch of sims", func() {
 			year := 21
 			population := Population{
-				&Sim{ID: 0, Sex: 1, Born: 0},
-				&Sim{ID: 1, Sex: 0, Born: 0},
+				&Sim{ID: 0, Sex: 0, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
 			}
 
 			_, sim := NewSim(population[0], population[1], year)
@@ -113,8 +123,8 @@ var _ = Describe("Sims", func() {
 		It("assigns sex based on population size", func() {
 			year := 22
 			population := Population{
-				&Sim{ID: 0, Sex: 1, Born: 0},
-				&Sim{ID: 1, Sex: 0, Born: 0},
+				&Sim{ID: 0, Sex: 0, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
 				&Sim{ID: 2, Sex: 0, Born: 0},
 			}
 

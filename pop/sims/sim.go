@@ -16,6 +16,10 @@ type Sim struct {
 type Population []*Sim
 
 func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
+	if s0.Sex != 0 {
+		return errors.New("parent0 should be sex 0"), Sim{}
+	}
+
 	if year-s0.Born >= 40 {
 		return errors.New("parent0 is too old"), Sim{}
 	}
