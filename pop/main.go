@@ -28,7 +28,6 @@ func main() {
 				break
 			}
 			nextSim.ID = len(pop)
-			nextSim.Born = i
 			nextSim.Sex = i % 2
 			pop = append(pop, &nextSim)
 		}
