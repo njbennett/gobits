@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/njbennett/gobits/pop/sims"
 )
@@ -12,7 +14,12 @@ func main() {
 		&sims.Sim{ID: 1, Sex: 1, Born: 0},
 	}
 
-	for i := 0; i < 21; i++ {
+	gen, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < gen; i++ {
 		parent1 := pop[1]
 
 		for _, parent0 := range pop.Eligible(i) {
