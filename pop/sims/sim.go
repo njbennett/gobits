@@ -37,7 +37,7 @@ func (s Sim) Format() string {
 	if s.Parent0 != nil {
 		parents = fmt.Sprintf("%d %d", s.Parent0.ID, s.Parent1.ID)
 	}
-	return fmt.Sprintf("ID: %d Sex: %d Born: %d Parents: %s", s.ID, s.Sex, s.Born, parents)
+	return fmt.Sprintf("ID: %d Sex: %d Born: %d Died: %d Parents: %s", s.ID, s.Sex, s.Born, s.Died, parents)
 }
 
 func (s Population) Eligible(year int) Population {

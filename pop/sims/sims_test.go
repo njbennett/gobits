@@ -52,9 +52,9 @@ var _ = Describe("Sims", func() {
 
 	Describe("Format", func() {
 		It("formats Sim for printing", func() {
-			noParents0 := "ID: 0 Sex: 0 Born: 0 Parents: - -"
-			noParents1 := "ID: 1 Sex: 1 Born: 0 Parents: - -"
-			hasParents := "ID: 2 Sex: 0 Born: 20 Parents: 0 1"
+			noParents0 := "ID: 0 Sex: 0 Born: 0 Died: 0 Parents: - -"
+			noParents1 := "ID: 1 Sex: 1 Born: 0 Died: 0 Parents: - -"
+			hasParents := "ID: 2 Sex: 0 Born: 20 Died: 0 Parents: 0 1"
 
 			sim0 := Sim{Born: 0, ID: 0, Sex: 0}
 			sim1 := Sim{Born: 0, ID: 1, Sex: 1}
