@@ -11,6 +11,7 @@ type Sim struct {
 	Parent1 *Sim
 	Born    int
 	Sex     int
+	Died    int
 }
 
 type Population []*Sim
@@ -47,4 +48,13 @@ func (s Population) Eligible(year int) Population {
 		}
 	}
 	return eligible
+}
+
+func (s Population) Cull(year int) Population {
+	for _, nextSim := range s {
+		if year-nextSim.Born >= 80 {
+			nextSim.Died = year
+		}
+	}
+	return s
 }

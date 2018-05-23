@@ -32,6 +32,7 @@ func main() {
 			nextSim.Sex = i % 2
 			pop = append(pop, &nextSim)
 		}
+		pop = pop.Cull(i)
 	}
 
 	for _, s := range pop {
