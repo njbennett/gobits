@@ -21,7 +21,8 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 	}
 
 	if year-s0.Born >= 40 {
-		return errors.New("parent0 is too old"), Sim{}
+		msg := fmt.Sprintf("Sim ID %d is Age %d, too old to be parent0", s0.ID, s0.age(year))
+		return errors.New(msg), Sim{}
 	}
 
 	if s0.Sex == s1.Sex {

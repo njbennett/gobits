@@ -30,12 +30,12 @@ var _ = Describe("Sims", func() {
 		})
 
 		It("returns an error when parent0 is too old", func() {
-			s0 := Sim{Sex: 0, Born: 0}
-			s1 := Sim{Sex: 1, Born: 0}
+			s0 := Sim{ID: 0, Sex: 0, Born: 0}
+			s1 := Sim{ID: 1, Sex: 1, Born: 0}
 			year := 40
 
 			err, newSim := NewSim(&s0, &s1, year)
-			Expect(err).To(Equal(errors.New("parent0 is too old")))
+			Expect(err).To(Equal(errors.New("Sim ID 0 is Age 40, too old to be parent0")))
 			Expect(newSim).To(Equal(Sim{}))
 		})
 
