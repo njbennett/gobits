@@ -20,7 +20,7 @@ func main() {
 	}
 
 	for i := 0; i < gen; i++ {
-		pop = append(pop, pop.ThisYearsSims(gen)...)
+		pop = append(pop, pop.ThisYearsSims(i)...)
 	}
 
 	for _, s := range pop {
