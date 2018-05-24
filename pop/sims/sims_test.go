@@ -68,6 +68,16 @@ var _ = Describe("Sims", func() {
 			Expect(err).To(Equal(errors.New("Sim ID 1 is Sex 1, but should be Sex 0 to be parent0")))
 			Expect(newSim).To(Equal(Sim{}))
 		})
+
+		It("returns an error when parent0 is too young", func() {
+			s0 := Sim{ID: 0, Born: 10, Sex: 0}
+			s1 := Sim{ID: 1, Born: 0, Sex: 1}
+			year := 20
+
+			err, newSim := NewSim(&s0, &s1, year)
+			Expect(err).To(Equal(errors.New("Sim ID 0 is Age 10, too young to be parent0")))
+			Expect(newSim).To(Equal(Sim{}))
+		})
 	})
 
 	Describe("Format", func() {
