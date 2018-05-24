@@ -138,14 +138,23 @@ var _ = Describe("Sims", func() {
 				&Sim{ID: 2, Sex: 0, Born: 0},
 			}
 
-			_, sim := NewSim(population[0], population[1], year)
-			sim.ID = len(population)
-			sim.Sex = len(population) % 2
+			firstBorn := population.ThisYearsSims(year)[0]
 
-			thisYearsSims := Population{&sim}
-
-			Expect(population.ThisYearsSims(year)).To(Equal(thisYearsSims))
+			Expect(firstBorn.Sex).To(Equal(1))
 		})
 
+		It("generates one child for every eligible Sex 0 sim", func() {
+			year := 50
+			population := Population{
+				&Sim{ID: 0, Sex: 0, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
+				&Sim{ID: 2, Sex: 0, Born: 0},
+				&Sim{ID: 3, Sex: 0, Born: 20},
+				&Sim{ID: 4, Sex: 0, Born: 20},
+				&Sim{ID: 5, Sex: 0, Born: 40},
+			}
+
+			Expect(len(population.ThisYearsSims(year))).To(Equal(2))
+		})
 	})
 })
