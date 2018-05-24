@@ -60,12 +60,12 @@ var _ = Describe("Sims", func() {
 		})
 
 		It("returns an error when parent0 is not sex 0", func() {
-			s0 := Sim{Born: 0, Sex: 0}
-			s1 := Sim{Born: 0, Sex: 1}
+			s0 := Sim{ID: 0, Born: 0, Sex: 0}
+			s1 := Sim{ID: 1, Born: 0, Sex: 1}
 			year := 20
 
 			err, newSim := NewSim(&s1, &s0, year)
-			Expect(err).To(Equal(errors.New("parent0 should be sex 0")))
+			Expect(err).To(Equal(errors.New("Sim ID 1 is Sex 1, but should be Sex 0 to be parent0")))
 			Expect(newSim).To(Equal(Sim{}))
 		})
 	})

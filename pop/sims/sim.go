@@ -18,7 +18,8 @@ type Population []*Sim
 func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 
 	if s0.Sex != 0 {
-		return errors.New("parent0 should be sex 0"), Sim{}
+		msg := fmt.Sprintf("Sim ID %d is Sex %d, but should be Sex 0 to be parent0", s0.ID, s0.Sex)
+		return errors.New(msg), Sim{}
 	}
 
 	s0age := s0.age(year)
