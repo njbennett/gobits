@@ -81,13 +81,14 @@ func (s Population) Eligible(year int) Population {
 func (s Population) ThisYearsSims(year int) Population {
 	p1 := s[1]
 	pop := Population{}
+	c := 0
 
 	for _, p0 := range s {
 		err, sim := NewSim(p0, p1, year)
-
 		if err == nil {
-			sim.ID = (len(s))
-			sim.Sex = (len(s)) % 2
+			sim.ID = len(s) + c
+			sim.Sex = len(s) % 2
+			c = c + 1
 			pop = append(pop, &sim)
 		}
 	}

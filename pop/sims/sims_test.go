@@ -156,5 +156,20 @@ var _ = Describe("Sims", func() {
 
 			Expect(len(population.ThisYearsSims(year))).To(Equal(2))
 		})
+
+		It("assigns incrementing IDs to each child in a generation", func() {
+			year := 50
+			population := Population{
+				&Sim{ID: 0, Sex: 0, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
+				&Sim{ID: 2, Sex: 0, Born: 0},
+				&Sim{ID: 3, Sex: 0, Born: 20},
+				&Sim{ID: 4, Sex: 0, Born: 20},
+				&Sim{ID: 5, Sex: 0, Born: 40},
+			}
+
+			Expect(population.ThisYearsSims(year)[0].ID).To(Equal(6))
+			Expect(population.ThisYearsSims(year)[1].ID).To(Equal(7))
+		})
 	})
 })
