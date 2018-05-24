@@ -20,17 +20,7 @@ func main() {
 	}
 
 	for i := 0; i < gen; i++ {
-		parent1 := pop[1]
-
-		for _, parent0 := range pop.Eligible(i) {
-			err, nextSim := sims.NewSim(parent0, parent1, i)
-			if err != nil {
-				break
-			}
-			nextSim.ID = len(pop)
-			nextSim.Sex = i % 2
-			pop = append(pop, &nextSim)
-		}
+		pop = append(pop, pop.ThisYearsSims(gen)...)
 	}
 
 	for _, s := range pop {
