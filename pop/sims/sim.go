@@ -22,16 +22,18 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		return err, Sim{}
 	}
 
+	err = s1.canBeParent1(year)
+
+	if err != nil {
+		return err, Sim{}
+	}
+
 	if s0.Sex == s1.Sex {
 		return errors.New("Parents cannot have the same sex"), Sim{}
 	}
 
 	if s0.Parent1 == s1 {
 		return errors.New("Parent1 cannot be the parent of Parent0"), Sim{}
-	}
-
-	if s1.death() < year {
-		return errors.New("parent1 is too dead"), Sim{}
 	}
 
 	return nil, Sim{
@@ -58,6 +60,26 @@ func (s Sim) canBeParent0(year int) error {
 		msg := fmt.Sprintf("Sim ID %d is Age %d, too young to be parent0", s.ID, s0age)
 		return errors.New(msg)
 	}
+	return nil
+}
+
+func (s Sim) canBeParent1(year int) error {
+	if s.Sex != 1 {
+		msg := fmt.Sprintf("Sim ID %d is Sex %d, but should be Sex 1 to be parent1", s.ID, s.Sex)
+		return errors.New(msg)
+	}
+
+	s1age := s.age(year)
+
+	if s1age <= 18 {
+		msg := fmt.Sprintf("Sim ID %d is Age %d, too young to be parent0", s.ID, s1age)
+		return errors.New(msg)
+	}
+
+	if s.death() < year {
+		return errors.New("parent1 is too dead")
+	}
+
 	return nil
 }
 
