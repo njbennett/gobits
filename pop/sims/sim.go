@@ -118,13 +118,13 @@ func (s Population) eligibleP0(year int) Population {
 }
 
 func (s Population) ThisYearsSims(year int, limit int) Population {
-	pop := Population{}
+	genPop := Population{}
 	popSize := len(s)
 	parent1s := s.eligibleP1(year)
 	parent0s := s.eligibleP0(year)
 
 	for _, p0 := range parent0s {
-		if limit > 0 && popSize+len(s) > limit {
+		if limit > 0 && popSize >= limit {
 			break
 		}
 		for _, p1 := range parent1s {
@@ -135,11 +135,11 @@ func (s Population) ThisYearsSims(year int, limit int) Population {
 				sim.ID = popSize
 				sim.Sex = popSize % 2
 				popSize++
-				pop = append(pop, &sim)
+				genPop = append(genPop, &sim)
 				break
 			}
 		}
 
 	}
-	return pop
+	return genPop
 }

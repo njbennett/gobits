@@ -115,16 +115,16 @@ var _ = Describe("Sims", func() {
 		})
 
 		It("generates sims up to the population limit", func() {
-			year := 21
-			limit := 2
+			year := 20
 			population := Population{
-				&Sim{ID: 0, Sex: 0, Born: 0},
-				&Sim{ID: 1, Sex: 1, Born: 0},
+				&Sim{ID: 0, Sex: 1, Born: 0},
+				&Sim{ID: 1, Sex: 0, Born: 0},
+				&Sim{ID: 2, Sex: 0, Born: 0},
 			}
 
-			thisYearsSims := Population{}
+			limit := len(population) + 1
 
-			Expect(population.ThisYearsSims(year, limit)).To(Equal(thisYearsSims))
+			Expect(len(population.ThisYearsSims(year, limit))).To(Equal(1))
 		})
 
 		It("treats limits of < 0 as no limit", func() {
