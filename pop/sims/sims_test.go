@@ -39,16 +39,6 @@ var _ = Describe("Sims", func() {
 			Expect(newSim).To(Equal(Sim{}))
 		})
 
-		It("returns an error when parents are the same sex", func() {
-			s0 := Sim{Sex: 0, Born: 0}
-			s1 := Sim{Sex: 0, Born: 0}
-			year := 20
-
-			err, newSim := NewSim(&s0, &s1, year)
-			Expect(err).To(Equal(errors.New("Parents cannot have the same sex")))
-			Expect(newSim).To(Equal(Sim{}))
-		})
-
 		It("returns an error when parent1 is parent of parent0", func() {
 			s0 := Sim{Sex: 0, Born: 0}
 			s1 := Sim{Sex: 1, Born: 0}

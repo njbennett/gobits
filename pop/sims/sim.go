@@ -28,10 +28,6 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		return err, Sim{}
 	}
 
-	if s0.Sex == s1.Sex {
-		return errors.New("Parents cannot have the same sex"), Sim{}
-	}
-
 	if s0.Parent1 == s1 {
 		return errors.New("Parent1 cannot be the parent of Parent0"), Sim{}
 	}
@@ -125,7 +121,6 @@ func (s Population) ThisYearsSims(year int) Population {
 	pop := Population{}
 	popSize := len(s)
 	parent1s := s.eligibleP1(year)
-	fmt.Println(len(parent1s))
 	parent0s := s.eligibleP0(year)
 
 	for _, p0 := range parent0s {
