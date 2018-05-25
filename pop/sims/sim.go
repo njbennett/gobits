@@ -56,6 +56,10 @@ func (s Sim) Format() string {
 	return fmt.Sprintf("ID: %d Sex: %d Born: %d Died: %d Parents: %s", s.ID, s.Sex, s.Born, s.death(), parents)
 }
 
+func CanBeParent1(s Sim) bool {
+	return s.Sex == 1
+}
+
 func (s Sim) age(year int) int {
 	return year - s.Born
 }
