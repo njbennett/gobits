@@ -100,6 +100,7 @@ var _ = Describe("Sims", func() {
 	Describe("ThisYearsSims", func() {
 		It("generates a new batch of sims", func() {
 			year := 21
+			limit := 100
 			population := Population{
 				&Sim{ID: 0, Sex: 0, Born: 0},
 				&Sim{ID: 1, Sex: 1, Born: 0},
@@ -110,24 +111,50 @@ var _ = Describe("Sims", func() {
 
 			thisYearsSims := Population{&sim}
 
-			Expect(population.ThisYearsSims(year)).To(Equal(thisYearsSims))
+			Expect(population.ThisYearsSims(year, limit)).To(Equal(thisYearsSims))
+		})
+
+		It("generates sims up to the population limit", func() {
+			year := 21
+			limit := 2
+			population := Population{
+				&Sim{ID: 0, Sex: 0, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
+			}
+
+			thisYearsSims := Population{}
+
+			Expect(population.ThisYearsSims(year, limit)).To(Equal(thisYearsSims))
+		})
+
+		It("treats limits of < 0 as no limit", func() {
+			year := 21
+			limit := -1
+			population := Population{
+				&Sim{ID: 0, Sex: 0, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
+			}
+
+			Expect(len(population.ThisYearsSims(year, limit))).To(Equal(1))
 		})
 
 		It("assigns sex based on population size", func() {
 			year := 22
+			limit := 100
 			population := Population{
 				&Sim{ID: 0, Sex: 0, Born: 0},
 				&Sim{ID: 1, Sex: 1, Born: 0},
 				&Sim{ID: 2, Sex: 0, Born: 0},
 			}
 
-			firstBorn := population.ThisYearsSims(year)[0]
+			firstBorn := population.ThisYearsSims(year, limit)[0]
 
 			Expect(firstBorn.Sex).To(Equal(1))
 		})
 
 		It("generates one child for every eligible Sex 0 sim", func() {
 			year := 50
+			limit := 100
 			population := Population{
 				&Sim{ID: 0, Sex: 0, Born: 0},
 				&Sim{ID: 1, Sex: 1, Born: 0},
@@ -137,11 +164,12 @@ var _ = Describe("Sims", func() {
 				&Sim{ID: 5, Sex: 0, Born: 40},
 			}
 
-			Expect(len(population.ThisYearsSims(year))).To(Equal(2))
+			Expect(len(population.ThisYearsSims(year, limit))).To(Equal(2))
 		})
 
 		It("includes generated sims in population size for sex and ID", func() {
 			year := 50
+			limit := 100
 			population := Population{
 				&Sim{ID: 0, Sex: 0, Born: 0},
 				&Sim{ID: 1, Sex: 1, Born: 0},
@@ -151,14 +179,15 @@ var _ = Describe("Sims", func() {
 				&Sim{ID: 5, Sex: 0, Born: 40},
 			}
 
-			Expect(population.ThisYearsSims(year)[0].ID).To(Equal(6))
-			Expect(population.ThisYearsSims(year)[0].Sex).To(Equal(0))
-			Expect(population.ThisYearsSims(year)[1].ID).To(Equal(7))
-			Expect(population.ThisYearsSims(year)[1].Sex).To(Equal(1))
+			Expect(population.ThisYearsSims(year, limit)[0].ID).To(Equal(6))
+			Expect(population.ThisYearsSims(year, limit)[0].Sex).To(Equal(0))
+			Expect(population.ThisYearsSims(year, limit)[1].ID).To(Equal(7))
+			Expect(population.ThisYearsSims(year, limit)[1].Sex).To(Equal(1))
 		})
 
 		It("selects an eligible p1 for each p0, if possible", func() {
 			year := 30
+			limit := 100
 			population := Population{
 				&Sim{ID: 0, Sex: 1, Born: 0},
 				&Sim{ID: 1, Sex: 1, Born: 0},
@@ -166,8 +195,8 @@ var _ = Describe("Sims", func() {
 
 			population = append(population, &Sim{ID: 3, Sex: 0, Born: 0, Parent1: population[0]})
 
-			Expect(len(population.ThisYearsSims(year))).To(Equal(1))
-			parent1 := population.ThisYearsSims(year)[0].Parent1
+			Expect(len(population.ThisYearsSims(year, limit))).To(Equal(1))
+			parent1 := population.ThisYearsSims(year, limit)[0].Parent1
 			expectedParent1 := population[1]
 			Expect(parent1).To(Equal(expectedParent1))
 		})
@@ -175,6 +204,7 @@ var _ = Describe("Sims", func() {
 		Measure("it should handle populations with many dead sims quickly", func(b Benchmarker) {
 			runtime := b.Time("runtime", func() {
 				year := 100
+				limit := 100000000
 				population := Population{
 					&Sim{ID: 0, Sex: 0, Born: 80},
 					&Sim{ID: 1, Sex: 1, Born: 80},
@@ -187,7 +217,7 @@ var _ = Describe("Sims", func() {
 					population = append(population, &Sim{ID: i, Sex: 1, Born: 0})
 				}
 
-				Expect(len(population.ThisYearsSims(year))).To(Equal(1))
+				Expect(len(population.ThisYearsSims(year, limit))).To(Equal(1))
 			})
 			Expect(runtime.Seconds()).Should(BeNumerically("<", 0.2))
 		}, 10)

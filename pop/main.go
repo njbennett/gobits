@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -19,8 +20,10 @@ func main() {
 		panic(err)
 	}
 
+	limit := 10000
+
 	for i := 0; i < gen; i++ {
-		pop = append(pop, pop.ThisYearsSims(i)...)
+		pop = append(pop, pop.ThisYearsSims(i, limit)...)
 	}
 
 	for _, s := range pop {

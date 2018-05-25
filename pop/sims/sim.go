@@ -117,13 +117,16 @@ func (s Population) eligibleP0(year int) Population {
 	return newPop
 }
 
-func (s Population) ThisYearsSims(year int) Population {
+func (s Population) ThisYearsSims(year int, limit int) Population {
 	pop := Population{}
 	popSize := len(s)
 	parent1s := s.eligibleP1(year)
 	parent0s := s.eligibleP0(year)
 
 	for _, p0 := range parent0s {
+		if limit > 0 && popSize+len(s) > limit {
+			break
+		}
 		for _, p1 := range parent1s {
 
 			err, sim := NewSim(p0, p1, year)
