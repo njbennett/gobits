@@ -117,14 +117,27 @@ func (s Population) eligibleP0(year int) Population {
 	return newPop
 }
 
+func (s Population) deadPopulation(year int) Population {
+	newPop := Population{}
+
+	for _, p := range s {
+		if p.death() < year {
+			newPop = append(newPop, p)
+		}
+	}
+	return newPop
+}
+
 func (s Population) ThisYearsSims(year int, limit int) Population {
 	genPop := Population{}
 	popSize := len(s)
+	deadPop := len(s.deadPopulation(year))
+
 	parent1s := s.eligibleP1(year)
 	parent0s := s.eligibleP0(year)
 
 	for _, p0 := range parent0s {
-		if limit > 0 && popSize >= limit {
+		if limit > 0 && popSize-deadPop >= limit {
 			break
 		}
 		for _, p1 := range parent1s {

@@ -127,6 +127,20 @@ var _ = Describe("Sims", func() {
 			Expect(len(population.ThisYearsSims(year, limit))).To(Equal(1))
 		})
 
+		It("doesn't count dead sims against the population limit", func() {
+			year := 120
+			population := Population{
+				&Sim{ID: 0, Sex: 1, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 100},
+				&Sim{ID: 2, Sex: 0, Born: 100},
+				&Sim{ID: 3, Sex: 0, Born: 100},
+			}
+
+			limit := 4
+
+			Expect(len(population.ThisYearsSims(year, limit))).To(Equal(1))
+		})
+
 		It("treats limits of < 0 as no limit", func() {
 			year := 21
 			limit := -1
