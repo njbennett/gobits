@@ -99,11 +99,22 @@ func (s Sim) death() int {
 	return s.Born + 80
 }
 
-func (s Population) sex1Sims() Population {
+func (s Population) eligibleP1(year int) Population {
 	newPop := Population{}
 
 	for _, p := range s {
-		if p.Sex == 1 {
+		if p.canBeParent1(year) == nil {
+			newPop = append(newPop, p)
+		}
+	}
+	return newPop
+}
+
+func (s Population) eligibleP0(year int) Population {
+	newPop := Population{}
+
+	for _, p := range s {
+		if p.canBeParent0(year) == nil {
 			newPop = append(newPop, p)
 		}
 	}
@@ -113,9 +124,12 @@ func (s Population) sex1Sims() Population {
 func (s Population) ThisYearsSims(year int) Population {
 	pop := Population{}
 	popSize := len(s)
+	parent1s := s.eligibleP1(year)
+	fmt.Println(len(parent1s))
+	parent0s := s.eligibleP0(year)
 
-	for _, p0 := range s {
-		for _, p1 := range s.sex1Sims() {
+	for _, p0 := range parent0s {
+		for _, p1 := range parent1s {
 
 			err, sim := NewSim(p0, p1, year)
 

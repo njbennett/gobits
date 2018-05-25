@@ -182,5 +182,25 @@ var _ = Describe("Sims", func() {
 			Expect(parent1).To(Equal(expectedParent1))
 		})
 
+		Measure("it should handle populations with many dead sims quickly", func(b Benchmarker) {
+			runtime := b.Time("runtime", func() {
+				year := 100
+				population := Population{
+					&Sim{ID: 0, Sex: 0, Born: 80},
+					&Sim{ID: 1, Sex: 1, Born: 80},
+				}
+
+				for i := 2; i < 1000; i++ {
+					population = append(population, &Sim{ID: i, Sex: 0, Born: 0})
+				}
+				for i := 1001; i < 100000; i++ {
+					population = append(population, &Sim{ID: i, Sex: 1, Born: 0})
+				}
+
+				Expect(len(population.ThisYearsSims(year))).To(Equal(1))
+			})
+			Expect(runtime.Seconds()).Should(BeNumerically("<", 0.2))
+		}, 10)
+
 	})
 })
