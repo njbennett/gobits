@@ -49,6 +49,17 @@ var _ = Describe("Sims", func() {
 			Expect(newSim).To(Equal(Sim{}))
 		})
 
+		It("returns an error when parent1 is parent of parent0", func() {
+			s0 := Sim{Sex: 0, Born: 0}
+			s1 := Sim{Sex: 1, Born: 0}
+			s2 := Sim{Sex: 0, Born: 20, Parent1: &s1, Parent0: &s0}
+			year := 40
+
+			err, newSim := NewSim(&s2, &s1, year)
+			Expect(err).To(Equal(errors.New("Parent1 cannot be the parent of Parent0")))
+			Expect(newSim).To(Equal(Sim{}))
+		})
+
 		It("returns an error when either parent is dead", func() {
 			s0 := Sim{Sex: 0, Born: 60}
 			s1 := Sim{Sex: 1, Born: 0}

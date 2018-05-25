@@ -26,6 +26,10 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		return errors.New("Parents cannot have the same sex"), Sim{}
 	}
 
+	if s0.Parent1 == s1 {
+		return errors.New("Parent1 cannot be the parent of Parent0"), Sim{}
+	}
+
 	if s1.death() < year {
 		return errors.New("parent1 is too dead"), Sim{}
 	}
