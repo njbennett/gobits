@@ -96,16 +96,6 @@ var _ = Describe("Sims", func() {
 		})
 	})
 
-	Describe("CanBeParent1", func() {
-		It("requires that Sim be Sex 0", func() {
-			validParent1 := Sim{Sex: 1}
-			invalidParent1 := Sim{Sex: 0}
-
-			Expect(CanBeParent1(validParent1)).To(BeTrue())
-			Expect(CanBeParent1(invalidParent1)).To(BeFalse())
-		})
-	})
-
 	Describe("Eligible", func() {
 		It("returns all sex 0 sims over 20 and under 40", func() {
 			year := 50
