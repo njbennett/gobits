@@ -204,7 +204,7 @@ var _ = Describe("Sims", func() {
 		Measure("it should handle populations with many dead sims quickly", func(b Benchmarker) {
 			runtime := b.Time("runtime", func() {
 				year := 100
-				limit := 100000000
+				limit := -1
 				population := Population{
 					&Sim{ID: 0, Sex: 0, Born: 80},
 					&Sim{ID: 1, Sex: 1, Born: 80},
