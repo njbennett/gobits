@@ -167,5 +167,20 @@ var _ = Describe("Sims", func() {
 			Expect(population.ThisYearsSims(year)[1].Sex).To(Equal(1))
 		})
 
+		It("selects an eligible p1 for each p0, if possible", func() {
+			year := 30
+			population := Population{
+				&Sim{ID: 0, Sex: 1, Born: 0},
+				&Sim{ID: 1, Sex: 1, Born: 0},
+			}
+
+			population = append(population, &Sim{ID: 3, Sex: 0, Born: 0, Parent1: population[0]})
+
+			Expect(len(population.ThisYearsSims(year))).To(Equal(1))
+			parent1 := population.ThisYearsSims(year)[0].Parent1
+			expectedParent1 := population[1]
+			Expect(parent1).To(Equal(expectedParent1))
+		})
+
 	})
 })
