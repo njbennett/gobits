@@ -73,20 +73,6 @@ func (s Sim) death() int {
 	return s.Born + 80
 }
 
-func (s Sim) eligible(year int) bool {
-	return s.Sex == 0 && s.age(year) >= 20 && s.age(year) <= 40
-}
-
-func (s Population) Eligible(year int) Population {
-	eligible := Population{}
-	for _, nextSim := range s {
-		if nextSim.eligible(year) {
-			eligible = append(eligible, nextSim)
-		}
-	}
-	return eligible
-}
-
 func (s Population) ThisYearsSims(year int) Population {
 	p1 := s[1]
 	pop := Population{}
