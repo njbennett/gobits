@@ -79,6 +79,17 @@ var _ = Describe("Sims", func() {
 			Expect(err).To(Equal(errors.New("Sim ID 0 is Age 10, too young to be parent0")))
 			Expect(newSim).To(Equal(Sim{}))
 		})
+
+		It("returns an error when parent0 and parent1 share parent0", func() {
+			s0 := Sim{Sex: 0, Born: 0}
+			s1 := Sim{Sex: 1, Born: 20, Parent0: &s0}
+			s2 := Sim{Sex: 0, Born: 21, Parent0: &s0}
+			year := 40
+
+			err, newSim := NewSim(&s2, &s1, year)
+			Expect(err).To(Equal(errors.New("Parent0 and Parent1 have the same Parent0")))
+			Expect(newSim).To(Equal(Sim{}))
+		})
 	})
 
 	Describe("Format", func() {

@@ -32,6 +32,10 @@ func NewSim(s0 *Sim, s1 *Sim, year int) (error, Sim) {
 		return errors.New("Parent1 cannot be the parent of Parent0"), Sim{}
 	}
 
+	if s0.Parent0 != nil && s1.Parent0 != nil && s0.Parent0 == s1.Parent0 {
+		return errors.New("Parent0 and Parent1 have the same Parent0"), Sim{}
+	}
+
 	return nil, Sim{
 		Parent0: s0,
 		Parent1: s1,
