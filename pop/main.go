@@ -20,7 +20,10 @@ func main() {
 		panic(err)
 	}
 
-	limit := 10000
+	limit, err := strconv.Atoi(os.Args[2])
+	if err != nil {
+		limit = -1
+	}
 
 	for i := 0; i < gen; i++ {
 		pop = append(pop, pop.ThisYearsSims(i, limit)...)
