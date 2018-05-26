@@ -29,7 +29,18 @@ func main() {
 		pop = append(pop, pop.ThisYearsSims(i, limit)...)
 	}
 
-	for _, s := range pop {
+	simsch := make(chan *sims.Sim)
+
+	go feed(pop, simsch)
+
+	for s := range simsch {
 		fmt.Println(s.Format())
 	}
+}
+
+func feed(p []*sims.Sim, ch chan *sims.Sim) {
+	for _, s := range p {
+		ch <- s
+	}
+	close(ch)
 }
